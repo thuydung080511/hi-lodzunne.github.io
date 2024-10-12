@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Máy Tính Cơ Bản</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            background-color: #f4f4f4;
+            display: flex; 
+            justify-content: center;
+            align-items: center; 
+           
+         }
+        #calculator { 
+            background: white; 
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
+        }
+        input, button { 
+            width: 40px; 
+            height: 40px; 
+            font-size: 20px;
+            margin: 5px; 
+        }
+        .result { 
+            width: 200px;
+            height: 60px; 
+            font-size: 24px; 
+            text-align: right; }
+        button { 
+            background-color: #6495ED; 
+            color: white; 
+            border: none; 
+            border-radius: 5px; 
+            cursor: pointer; }
+        button:hover { background-color: #0056b3; }
+    </style>
+</head>
+<body>
+    <div id="calculator">
+        <input type="text" id="result" class="result" disabled>
+        <br>
+        <button onclick="clearResult()">C</button>
+        <button onclick="setMemory()">M+</button>
+        <button onclick="subtractMemory()">M-</button>
+        <button onclick="recallMemory()">RM</button>
+        <br>
+        <button onclick="appendValue(7)">7</button>
+        <button onclick="appendValue(8)">8</button>
+        <button onclick="appendValue(9)">9</button>
+        <button onclick="setOperation('/')">/</button>
+        <br>
+        <button onclick="appendValue(4)">4</button>
+        <button onclick="appendValue(5)">5</button>
+        <button onclick="appendValue(6)">6</button>
+        <button onclick="setOperation('*')">x</button>
+        <br>
+        <button onclick="appendValue(1)">1</button>
+        <button onclick="appendValue(2)">2</button>
+        <button onclick="appendValue(3)">3</button>
+        <button onclick="setOperation('-')">-</button>
+        <br>
+        <button onclick="appendValue(0)">0</button>
+        <button onclick="appendValue('.')">.</button>
+        <button onclick="calculate()">=</button>
+        <button onclick="setOperation('+')">+</button>
+        <br>
+        <button onclick="square()">x²</button>
+        <button onclick="squareRoot()">√x</button>
+    </div>
+
+    <script>
+        let currentValue = '';
+        let operation = '';
+        let memory = 0;
+
+        function appendValue(value) {
+            currentValue += value;
+            document.getElementById('result').value = currentValue;
+        }
+
+        function setOperation(op) {
+            if (currentValue === '') return;
+            if (operation !== '') calculate();
+            operation = op;
+            currentValue += ` ${op} `;
+            document.getElementById('result').value = currentValue;
+        }
+
+        function calculate() {
+            try {
+                currentValue = eval(currentValue.replace('x', '*'));
+                document.getElementById('result').value = currentValue;
+                operation = '';
+            } catch {
+                document.getElementById('result').value = 'Lỗi!';
+            }
+        }
+
+        function clearResult() {
+            currentValue = '';
+            operation = '';
+            document.getElementById('result').value = '';
+        }
+
+        function square() {
+            if (currentValue === '') return;
+            currentValue = Math.pow(eval(currentValue), 2);
+            document.getElementById('result').value = currentValue;
+        }
+
+        function squareRoot() {
+            if (currentValue === '') return;
+            currentValue = Math.sqrt(eval(currentValue));
+            document.getElementById('result').value = currentValue;
+        }
+
+        function setMemory() {
+            memory += eval(currentValue);
+        }
+
+        function subtractMemory() {
+            memory -= eval(currentValue);
+        }
+
+        function recallMemory() {
+            document.getElementById('result').value = memory;
+            currentValue = memory.toString();
+        }
+    </script>
+</body>
+</html>
